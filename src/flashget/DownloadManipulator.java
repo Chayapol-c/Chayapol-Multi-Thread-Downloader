@@ -44,9 +44,9 @@ public class DownloadManipulator {
     /**
      * Create and run Threads using ExecutorService
      *
-     * @param threadNumber
-     * @param out
-     * @param urlName
+     * @param threadNumber is number of threads.
+     * @param out is a destination file.
+     * @param urlName is String of file's name
      */
     public void startDownload(String urlName, File out, long size, int threadNumber) {
         formatter = new OutputFormat();
@@ -74,6 +74,7 @@ public class DownloadManipulator {
      * Stop downloading.
      */
     public void stopDownload() {
+
         for (DownloadTask task : tasks) {
             task.cancel();
         }

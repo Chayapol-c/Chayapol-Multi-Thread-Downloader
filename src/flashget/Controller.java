@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Controller control DownloadTask. It contain UI components. set their an action.
@@ -86,9 +88,11 @@ public class Controller {
      * Application's pane
      */
     @FXML
-    public AnchorPane browseScene;
+    private AnchorPane browseScene;
     private ProgressBar[] threadProgresses;
     private DownloadManipulator controller;
+    private File out ;
+    private String text;
 
     @FXML
     public void initialize() {
@@ -96,8 +100,6 @@ public class Controller {
         clearButton.setOnAction(this::clear);
         downloadBar.setProgress(0.0);
         cancelButton.setOnAction(this::stopWorker);
-        pauseButton.setOnAction(this::pause);
-        resumeButton.setOnAction(this::resume);
         threadProgresses = new ProgressBar[]{threadProgress1, threadProgress2, threadProgress3, threadProgress4, threadProgress5};
         downloadButton.setVisible(true);
         cancelButton.setVisible(true);
@@ -110,7 +112,7 @@ public class Controller {
      * Call this method when Download button is pressed
      */
     public void startWorker(ActionEvent event) {
-        String text = textField.getText().trim();
+        text = textField.getText().trim();
         if (text.isEmpty()) return;
         //Create FileHandle for Out
         FileHandle fileHandle = new FileHandle();
@@ -118,7 +120,7 @@ public class Controller {
         urlHandle.connectURL(textField);
         long fileLength = urlHandle.getFileLength();
         String fileName = urlHandle.getFileName();
-        File out = null;
+        out = null;
         if (fileLength == 0) return;
         try {
             out = fileHandle.browseFile(browseScene, fileName);
@@ -154,22 +156,5 @@ public class Controller {
     public void clear(ActionEvent event) {
         textField.clear();
     }
-
-    /**
-     * Call this method when Resume button is pressed
-     */
-    public void resume(ActionEvent event) {
-        pauseButton.setVisible(true);
-        resumeButton.setVisible(false);
-    }
-
-    /**
-     * Call this method when Pause button is pressed
-     */
-    public void pause(ActionEvent event) {
-        resumeButton.setVisible(true);
-        pauseButton.setVisible(false);
-    }
-
 }
 

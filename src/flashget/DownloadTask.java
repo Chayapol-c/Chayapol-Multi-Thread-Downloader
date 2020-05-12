@@ -71,6 +71,7 @@ public class DownloadTask extends Task<Long> {
                     Notification.showDialog("cancel download");
                     break;
                 }
+
                 //Stop loop if it's end of a file.
                 if (read < 0) break;
             }
