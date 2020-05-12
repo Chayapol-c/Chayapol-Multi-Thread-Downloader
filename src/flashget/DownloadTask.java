@@ -66,7 +66,7 @@ public class DownloadTask extends Task<Long> {
                 updateProgress(download, fileLength);
                 updateValue(download);
                 if (isCancelled()) {
-                    updateProgress(0, 0);
+                    updateProgress(0,0);
                     updateValue((long) 0);
                     Notification.showDialog("cancel download");
                     break;

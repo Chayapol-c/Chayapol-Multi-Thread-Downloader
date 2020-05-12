@@ -48,12 +48,6 @@ public class Controller {
     @FXML
     private Button cancelButton;
 
-    @FXML
-    private Button resumeButton;
-
-    @FXML
-    private Button pauseButton;
-
     /**
      * Display name of download file
      */
@@ -91,7 +85,7 @@ public class Controller {
     private AnchorPane browseScene;
     private ProgressBar[] threadProgresses;
     private DownloadManipulator controller;
-    private File out ;
+    private File out;
     private String text;
 
     @FXML
@@ -103,8 +97,6 @@ public class Controller {
         threadProgresses = new ProgressBar[]{threadProgress1, threadProgress2, threadProgress3, threadProgress4, threadProgress5};
         downloadButton.setVisible(true);
         cancelButton.setVisible(true);
-        pauseButton.setVisible(false);
-        resumeButton.setVisible(false);
         VisibleOfUI.threadAreaControl(false, threadProgresses, threadTextLabel);
     }
 
@@ -127,13 +119,11 @@ public class Controller {
         } catch (NullPointerException npe) {
             return;
         }
-        downloadButton.setVisible(false);
-        pauseButton.setVisible(true);
         cancelButton.setDisable(false);
         fileNameLabel.setText(fileName);
         // set threadNumber
         final int threadNumber = 5;
-        controller = new DownloadManipulator(fileLength, threadProgresses, percentProgress, downloadTimeLabel, downloadBar, downloadButton);
+        controller = new DownloadManipulator(fileLength, threadProgresses, percentProgress, downloadTimeLabel, downloadBar, downloadButton ,threadTextLabel);
         long size = controller.sizeDivider(fileLength, threadNumber);
         controller.startDownload(text, out, size, threadNumber);
         VisibleOfUI.threadAreaControl(true, threadProgresses, threadTextLabel);
@@ -144,8 +134,6 @@ public class Controller {
      */
     public void stopWorker(ActionEvent event) {
         controller.stopDownload();
-        pauseButton.setVisible(false);
-        resumeButton.setVisible(false);
         downloadButton.setVisible(true);
         VisibleOfUI.threadAreaControl(false, threadProgresses, threadTextLabel);
     }

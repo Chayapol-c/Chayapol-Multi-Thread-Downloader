@@ -23,6 +23,7 @@ public class DownloadManipulator {
     private ProgressBar[] threadProgresses;
     private ProgressBar downloadBar;
     private Button downloadButton;
+    private Label threadTextLabel;
 
     private OutputFormat formatter;
     private long downloaded;
@@ -32,13 +33,14 @@ public class DownloadManipulator {
     /**
      * Initialize the DownloadManipulator
      */
-    public DownloadManipulator(long fileLength, ProgressBar[] threadProgresses, Label percentProgress, Label downloadTimeLabel, ProgressBar downloadBar, Button downloadButton) {
+    public DownloadManipulator(long fileLength, ProgressBar[] threadProgresses, Label percentProgress, Label downloadTimeLabel, ProgressBar downloadBar, Button downloadButton , Label threadTextLabel) {
         this.fileLength = fileLength;
         this.threadProgresses = threadProgresses;
         this.percentProgress = percentProgress;
         this.downloadTimeLabel = downloadTimeLabel;
         this.downloadBar = downloadBar;
         this.downloadButton = downloadButton;
+        this.threadTextLabel = threadTextLabel;
     }
 
     /**
@@ -74,7 +76,6 @@ public class DownloadManipulator {
      * Stop downloading.
      */
     public void stopDownload() {
-
         for (DownloadTask task : tasks) {
             task.cancel();
         }
@@ -112,13 +113,18 @@ public class DownloadManipulator {
         }
         // show Notification when download is complete.
         if (downloaded == fileLength) {
-            downloadButton.setVisible(true);
             Notification.showDialog("download complete");
+            VisibleOfUI.threadAreaControl(false,threadProgresses,threadTextLabel);
         }
+
         String remainTime = formatter.updateRemainingTime(remainingTime);
         //set message to components
         downloadTimeLabel.setText(remainTime);
         percentProgress.setText(byteProgressText);
+    }
+
+    public void resetSetting(){
+
     }
 
     /**

@@ -48,12 +48,12 @@
         </MenuBar>
         <AnchorPane fx:id="browseScene" prefHeight="214.0" prefWidth="667.0" xmlns="http://javafx.com/javaf x/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
             <children>
-                <Button fx:id="pauseButton" layoutX="443.0" layoutY="16.0" mnemonicParsing="false" onAction="#resume" prefHeight="30.0" prefWidth="90.0" text="Pause">
+                <Button fx:id="pauseButton" layoutX="443.0" layoutY="16.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Pause">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="resumeButton" layoutX="443.0" layoutY="16.0" mnemonicParsing="false" onAction="#resume" prefHeight="30.0" prefWidth="90.0" text="Resume">
+                <Button fx:id="resumeButton" layoutX="443.0" layoutY="16.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Resume">
                     <font>
                         <Font size="14.0" />
                     </font>
