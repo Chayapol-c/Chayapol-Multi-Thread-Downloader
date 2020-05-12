@@ -1,5 +1,6 @@
 package flashget;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -12,39 +13,46 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * @author Chayapol 6210545947
+ */
+
 public class FileHandle {
     private String fileName;
     private long fileLength;
 
-    public File browseFile(AnchorPane browseScene, Label fileNameLabel) {
+    /**
+     * @param browseScene
+     * @return destination file
+     */
+    public File browseFile(AnchorPane browseScene) {
+
         final FileChooser chooser = new FileChooser();
         chooser.setTitle("Choose Directory");
         chooser.setInitialFileName(fileName);
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All Files", "*" + fileName));
         Stage stage = (Stage) browseScene.getScene().getWindow();
         File out = null;
-        try {
-            out = chooser.showSaveDialog(stage);
-            chooser.setInitialDirectory(out.getParentFile());
-        } catch (NullPointerException npe) {
-            fileNameLabel.setText("Please Input URL");
-        }
+        out = chooser.showSaveDialog(stage);
+        chooser.setInitialDirectory(out.getParentFile());
+
         return out;
     }
 
+    /**
+     * @param textField
+     */
     public void connectURL(TextField textField) {
         String text = textField.getText().trim();
+        fileName = text.substring(text.lastIndexOf('/') + 1);
         try {
             URL url = new URL(text);
             URLConnection connection = url.openConnection();
             fileLength = connection.getContentLengthLong();
-            fileName = text.substring(text.lastIndexOf('/') + 1);
         } catch (MalformedURLException ignored) {
-            System.out.println("connect url");
-            //Alert
-
+            Notification.showDialog("Please input url ");
         } catch (IOException e) {
-            e.printStackTrace();
+            Notification.showDialog("Cannot find file " + fileName);
         }
     }
 
