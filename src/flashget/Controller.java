@@ -6,41 +6,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
- * Contain UI component
+ * Controller control DownloadTask. It contain UI components. set their an action.
  *
  * @author Chayapol 6210545947
  */
 public class Controller {
-
-    @FXML
-    private MenuBar menuBar;
-
-    @FXML
-    private MenuItem openFolder;
-
-    @FXML
-    private MenuItem selectFolder;
-
-    @FXML
-    private MenuItem quit;
-
-    @FXML
-    private Menu file;
-
-    @FXML
-    private Menu help;
-
-    @FXML
-    private MenuItem about;
-
-    @FXML
-    private MenuItem contactMe;
-
+    /**
+     * threadProgress1-5 are ProgressBar of DownloadTask.
+     */
     @FXML
     private ProgressBar threadProgress1;
 
@@ -56,6 +31,9 @@ public class Controller {
     @FXML
     private ProgressBar threadProgress5;
 
+    /**
+     * Input Field.
+     */
     @FXML
     private TextField textField;
 
@@ -66,16 +44,7 @@ public class Controller {
     private Button clearButton;
 
     @FXML
-    public Label fileNameLabel;
-
-    @FXML
     private Button cancelButton;
-
-    @FXML
-    private ProgressBar downloadBar;
-
-    @FXML
-    private Label percentProgress;
 
     @FXML
     private Button resumeButton;
@@ -83,89 +52,94 @@ public class Controller {
     @FXML
     private Button pauseButton;
 
+    /**
+     * Display name of download file
+     */
     @FXML
-    public AnchorPane browseScene;
+    private Label fileNameLabel;
 
+    /**
+     * Display current downloaded of file
+     */
+    @FXML
+    private Label percentProgress;
+
+    /**
+     * Display the remaining time
+     */
     @FXML
     private Label downloadTimeLabel;
 
+    /**
+     * Display String "Thread: "
+     */
     @FXML
     private Label threadTextLabel;
 
+    /**
+     * ProgressBar to show the progress of downloading
+     */
+    @FXML
+    private ProgressBar downloadBar;
+
+    /**
+     * Application's pane
+     */
+    @FXML
+    public AnchorPane browseScene;
     private ProgressBar[] threadProgresses;
     private DownloadManipulator controller;
-//    private VisibleOfUI visibleControl ;
 
     @FXML
     public void initialize() {
-
         downloadButton.setOnAction(this::startWorker);
         clearButton.setOnAction(this::clear);
         downloadBar.setProgress(0.0);
         cancelButton.setOnAction(this::stopWorker);
         pauseButton.setOnAction(this::pause);
         resumeButton.setOnAction(this::resume);
-        quit.setOnAction(this::quitProgram);
-        openFolder.setOnAction(this::getDownloadFolder);
-        selectFolder.setOnAction(this::setDownloadFolder);
-        about.setOnAction(this::getUsage);
-        contactMe.setOnAction(this::getContact);
-
         threadProgresses = new ProgressBar[]{threadProgress1, threadProgress2, threadProgress3, threadProgress4, threadProgress5};
-
         downloadButton.setVisible(true);
         cancelButton.setVisible(true);
         pauseButton.setVisible(false);
         resumeButton.setVisible(false);
-
-//        Map buttons = new HashMap<Button, Boolean>();
-//        buttons.put(downloadButton,true);
-//        buttons.put(cancelButton,true);
-//        buttons.put(pauseButton,false);
-//        buttons.put(resumeButton,false);
-//        visibleControl = new VisibleOfUI();
-//        visibleControl.setButtons(buttons);
         VisibleOfUI.threadAreaControl(false, threadProgresses, threadTextLabel);
-
     }
 
-    private void getContact(ActionEvent event) {
-    }
-
-    private void getUsage(ActionEvent event) {
-    }
-
-
-    //TODO refactor logical method to another class
+    /**
+     * Call this method when Download button is pressed
+     */
     public void startWorker(ActionEvent event) {
-
         String text = textField.getText().trim();
         if (text.isEmpty()) return;
         //Create FileHandle for Out
         FileHandle fileHandle = new FileHandle();
-        fileHandle.connectURL(textField);
-        long fileLength = fileHandle.getFileLength();
-        String fileName = fileHandle.getFileName();
-        File out =null;
-        if(fileLength == 0) return;
+        UrlHandle urlHandle = new UrlHandle();
+        urlHandle.connectURL(textField);
+        long fileLength = urlHandle.getFileLength();
+        String fileName = urlHandle.getFileName();
+        File out = null;
+        if (fileLength == 0) return;
         try {
-            out = fileHandle.browseFile(browseScene);
-        }catch (NullPointerException npe){
+            out = fileHandle.browseFile(browseScene, fileName);
+        } catch (NullPointerException npe) {
             return;
         }
-
         downloadButton.setVisible(false);
         pauseButton.setVisible(true);
         cancelButton.setDisable(false);
         fileNameLabel.setText(fileName);
-        int threadNumber = 5;
-
-        controller = new DownloadManipulator(fileLength,threadProgresses,percentProgress,downloadTimeLabel,downloadBar,downloadButton);
-        controller.startDownload(threadNumber, out, text);
+        // set threadNumber
+        final int threadNumber = 5;
+        controller = new DownloadManipulator(fileLength, threadProgresses, percentProgress, downloadTimeLabel, downloadBar, downloadButton);
+        long size = controller.sizeDivider(fileLength, threadNumber);
+        controller.startDownload(text, out, size, threadNumber);
         VisibleOfUI.threadAreaControl(true, threadProgresses, threadTextLabel);
     }
 
-    //TODO cancel Task
+    /**
+     * Call this method when Cancel button is pressed
+     */
     public void stopWorker(ActionEvent event) {
         controller.stopDownload();
         pauseButton.setVisible(false);
@@ -174,28 +148,27 @@ public class Controller {
         VisibleOfUI.threadAreaControl(false, threadProgresses, threadTextLabel);
     }
 
+    /**
+     * Call this method when Clear button is pressed
+     */
     public void clear(ActionEvent event) {
         textField.clear();
     }
 
+    /**
+     * Call this method when Resume button is pressed
+     */
     public void resume(ActionEvent event) {
         pauseButton.setVisible(true);
         resumeButton.setVisible(false);
     }
 
+    /**
+     * Call this method when Pause button is pressed
+     */
     public void pause(ActionEvent event) {
         resumeButton.setVisible(true);
         pauseButton.setVisible(false);
-    }
-
-    private void setDownloadFolder(ActionEvent event) {
-    }
-
-    private void getDownloadFolder(ActionEvent event) {
-    }
-
-    private void quitProgram(ActionEvent event) {
-        System.exit(0);
     }
 
 }

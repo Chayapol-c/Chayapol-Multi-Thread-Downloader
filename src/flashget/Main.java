@@ -6,6 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Launch JavaFX UI for Multi-Thread-Downloader.
+ *
+ * @author Chayapol 6210545947.
+ */
 public class Main extends Application {
 
 

@@ -43,7 +43,6 @@ public class DownloadTask extends Task<Long> {
     public Long call() {
         final int BUFFERSIZE = 1024;
         byte[] buffer = new byte[BUFFERSIZE];
-//        long startTime = System.nanoTime();
         try {
             URLConnection connection = url.openConnection();
             String range;
@@ -77,8 +76,6 @@ public class DownloadTask extends Task<Long> {
             }
             in.close();
             out.close();
-//            double elapsed = 1.0E-9 * (System.nanoTime() - startTime);
-//            System.out.printf("Elapsed %.6f sec\n", elapsed);
             return download;
         } catch (IOException ioe) {
             Notification.showDialog("Cannot find file " + file);

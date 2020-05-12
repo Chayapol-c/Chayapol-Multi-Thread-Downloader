@@ -1,7 +1,7 @@
 package flashget;
 
 /**
- * Make a String in nice formatting.
+ * Make a String be nice formatting.
  *
  * @author Chayapol 6210545947
  */
@@ -42,6 +42,13 @@ public class OutputFormat {
         return String.format("Remaining Time : %.0f %s", remainingTime, unit);
     }
 
+    /**
+     * Convert downloaded and fileLength for set in Label
+     *
+     * @param downloaded is how many byte downloaded.
+     * @param fileLength is download file's length.
+     * @return String that show how many byte downloaded compare to fileLength.
+     */
     public String byteConvert(double downloaded, double fileLength) {
         return String.format("%s / %s", convertByte(downloaded), convertByte(fileLength));
     }
