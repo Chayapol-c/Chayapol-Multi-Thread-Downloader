@@ -28,6 +28,6 @@ FlashGet has a simple Ul. It shows the downloaded file name and it’s progress.
 
 
 ### UML Diagram
-[![Package flashget](https://user-images.githubusercontent.com/59835553/81727846-c6960a00-94b3-11ea-835e-0c45daa4d596.png)](![Package flashget](https://user-images.githubusercontent.com/59835553/81727846-c6960a00-94b3-11ea-835e-0c45daa4d596.png))
+[![Package flashget](https://user-images.githubusercontent.com/59835553/81727846-c6960a00-94b3-11ea-835e-0c45daa4d596.png)](https://user-images.githubusercontent.com/59835553/81727846-c6960a00-94b3-11ea-835e-0c45daa4d596.png)
 
 
